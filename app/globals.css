@@ -8,24 +8,149 @@
 
   --color-brand-green: #1b4332;
   --color-brand-gold: #d4af37;
-  --color-brand-dark: #050505;
-  --color-brand-light: #f5f5f0;
+  --color-brand-dark: #0a0a0a;
+  --color-brand-light: #fafaf8;
 }
 
+/* ============================================
+   LIGHT MODE (Default) - Premium & Clean
+   ============================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #1b4332;
+  --background: #fafaf8;
+  --foreground: #1a1a1a;
+  --surface: #ffffff;
+  --surface-hover: #f5f5f3;
+  --border: rgba(0, 0, 0, 0.08);
+  --text-muted: #6b7280;
+  --accent: #1b4332;
+  --accent-gold: #c9a227;
 }
 
+/* ============================================
+   DARK MODE - Rich & Deep
+   ============================================ */
 .dark {
-  --background: #050505;
-  --foreground: #f5f5f0;
+  --background: #0a0a0a;
+  --foreground: #fafaf8;
+  --surface: rgba(255, 255, 255, 0.03);
+  --surface-hover: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.08);
+  --text-muted: #a1a1aa;
+  --accent: #2d6a4f;
+  --accent-gold: #d4af37;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, sans-serif;
   overflow-x: hidden;
-  /* Prevent horizontal scroll */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   PREMIUM SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-gold);
+}
+
+/* ============================================
+   PREMIUM CARD STYLES
+   ============================================ */
+.card-premium {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-premium:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent-gold);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
+}
+
+.dark .card-premium:hover {
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   HERO TITLE EFFECT (Simplified)
+   ============================================ */
+.hero-title-premium {
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: var(--accent-gold);
+  color: #1a1a1a;
+  transform: scale(1.02);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--foreground);
+  padding: 12px 28px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+/* ============================================
+   SECTION DIVIDERS
+   ============================================ */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+/* ============================================
+   SELECTION STYLING
+   ============================================ */
+::selection {
+  background: var(--accent-gold);
+  color: #1a1a1a;
 }

@@ -3,43 +3,93 @@ export interface Product {
     name: string;
     subtitle: string;
     description: string;
-    themeColor: string; // Hex for accent
-    secondaryColor: string; // Hex for secondary accent
-    frames: string[]; // List of URLs for the sequence
+    themeColor: string;
+    secondaryColor: string;
+    frames: string[];
+    price: number;
+    unit: string;
+    image: string;
+    benefits: string[];
 }
 
-// Placeholder: Using the single available signed URL for all frames in the mockup
-const MOCK_FRAME_URL = "https://esmdbjbvjrzoxbzjkuha.supabase.co/storage/v1/object/sign/Product%20Front%201/farmm/frame_000_delay-0.04s.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82ZTBiOWEzNy02MTMyLTQyYzgtYTM0Mi0xMTg5ZDM2ODdiOWEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJQcm9kdWN0IEZyb250IDEvZmFybW0vZnJhbWVfMDAwX2RlbGF5LTAuMDRzLndlYnAiLCJpYXQiOjE3NjY1NjY3MjEsImV4cCI6MTc5ODEwMjcyMX0.C4XMhyqYE4O65HO4k4I2FuBMwH_5D72fZgxXjMRxASg";
-
-// Create a mock sequence of 240 frames (all same image for now)
-const generateMockFrames = (count: number) => Array(count).fill(MOCK_FRAME_URL);
+const generateFrames = (dir: string, count: number) => {
+    return Array.from({ length: count }, (_, i) => {
+        const padIndex = String(i).padStart(3, '0');
+        return `/${dir}/frame_${padIndex}_delay-0.04s.webp`;
+    });
+};
 
 export const products: Product[] = [
     {
-        id: "01",
-        name: "VERMICOMPOST",
-        subtitle: "100% NATURAL • ORGANIC FERTILIZER",
-        description: "A nutrient-rich organic manure produced using earthworms. It improves soil structure, fertility, and crop productivity naturally. Where Soil Meets Sustainability.",
-        themeColor: "#1b4332", // Forest Green
-        secondaryColor: "#d4af37", // Gold
-        frames: generateMockFrames(240),
+        id: 'vermicompost',
+        name: 'VERMICOMPOST',
+        subtitle: '100% NATURAL • ORGANIC FERTILIZER',
+        description: 'Greenary Organics Vermicompost is a nutrient-rich organic manure produced using earthworms. It improves soil structure, fertility, and crop productivity naturally.',
+        themeColor: '#d4a53c',
+        secondaryColor: '#1b4332',
+        frames: generateFrames('frames', 192),
+        price: 50,
+        unit: 'per kg',
+        image: '/assets/product-showcase.jpg',
+        benefits: [
+            'Improves soil aeration and texture',
+            'Enhances water retention capacity',
+            'Rich in beneficial microorganisms',
+            'Promotes faster root growth'
+        ]
     },
     {
-        id: "02",
-        name: "BULK PACK",
-        subtitle: "5KG FARM SAVER",
-        description: "Ideal for larger home gardens and small farms. The same premium quality in a value-sized pack for extended nutrition.",
-        themeColor: "#d4af37", // Gold/Earth
-        secondaryColor: "#1b4332",
-        frames: generateMockFrames(240),
+        id: 'cow-dung-cakes',
+        name: 'COW DUNG CAKES',
+        subtitle: 'PURE • TRADITIONAL • NATURAL',
+        description: 'Pure and natural Cow Dung Cakes, traditionally used for Hawan, Pooja, and as a natural fuel. Can also be used as a potent organic fertilizer when broken down.',
+        themeColor: '#8c6b48',
+        secondaryColor: '#1b4332',
+        frames: generateFrames('frames', 192),
+        price: 15,
+        unit: 'per cake',
+        image: '/assets/cow-dung-cakes.jpg',
+        benefits: [
+            '100% natural and sun-dried',
+            'Ideal for religious ceremonies',
+            'Eco-friendly fuel source',
+            'Rich source of organic matter'
+        ]
     },
     {
-        id: "03",
-        name: "POT POTTING MIX",
-        subtitle: "READY TO USE BLEND",
-        description: "A perfect blend of coco peat, vermicompost, and red soil. Ready-to-use mixture for your pots and planters.",
-        themeColor: "#8c6b48", // Earthy Brown
-        secondaryColor: "#74c69d",
-        frames: generateMockFrames(240),
+        id: 'cow-dung-manure',
+        name: 'COW DUNG MANURE',
+        subtitle: 'AGED • DECOMPOSED • POTENT',
+        description: 'Aged and decomposed Cow Dung Manure, perfect for vegetable gardening and flowering plants. It provides a balanced supply of Nitrogen, Phosphorus, and Potassium.',
+        themeColor: '#4CAF50',
+        secondaryColor: '#1b4332',
+        frames: generateFrames('frames', 192),
+        price: 50,
+        unit: 'per kg',
+        image: '/assets/cow-dung-manure.jpg',
+        benefits: [
+            'High nitrogen content for lush growth',
+            'Fully decomposed and odor-free',
+            'Improves soil fertility instantly',
+            'Suitable for all home gardens'
+        ]
     },
+    {
+        id: 'pot-mixture',
+        name: 'POT MIXTURE WITH POT',
+        subtitle: 'READY TO USE BLEND',
+        description: 'Ready-to-use Potting Mix that comes with a premium pot. A balanced blend of soil, cocopeat, vermicompost, and essential nutrients for hassle-free gardening.',
+        themeColor: '#d4a53c',
+        secondaryColor: '#1b4332',
+        frames: generateFrames('frames', 192),
+        price: 200,
+        unit: 'per pot',
+        image: '/assets/pot-mixture.jpg',
+        benefits: [
+            'Ready to use - just add plants',
+            'Balanced pH and nutrition',
+            'Includes high-quality pot',
+            'Excellent drainage provided'
+        ]
+    }
 ];

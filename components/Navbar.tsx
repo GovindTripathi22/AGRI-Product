@@ -4,11 +4,9 @@ import { useStore } from '@/store/useStore';
 import { motion } from 'framer-motion';
 import { Menu, Moon, Sun, X } from 'lucide-react';
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
 
 const links = [
-    { name: 'Benefits', href: '#benefits' },
-    { name: 'How to Use', href: '#how-to-use' },
+    { name: 'Products', href: '#products' },
     { name: 'About', href: '#about' },
     { name: 'Contact', href: '#contact' },
 ];
@@ -21,70 +19,91 @@ export default function Navbar() {
         <motion.nav
             initial={{ y: -100 }}
             animate={{ y: 0 }}
-            className="fixed top-0 left-0 right-0 z-50 px-6 py-4 backdrop-blur-md bg-opacity-80 transition-colors duration-500"
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="fixed top-0 left-0 right-0 z-50 px-6 py-4"
         >
-            <div className="max-w-7xl mx-auto flex items-center justify-between">
-                {/* Logo */}
-                <div className="text-xl font-bold tracking-wider text-brand-green dark:text-brand-light flex items-center gap-2">
-                    <div className="w-8 h-8 bg-brand-gold rounded-full flex items-center justify-center text-brand-dark font-serif font-black">
-                        G
+            <div className="max-w-6xl mx-auto">
+                <div className="flex items-center justify-between px-4 py-2 rounded-full bg-[var(--surface)] border border-[var(--border)] backdrop-blur-xl">
+                    {/* Logo */}
+                    <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full overflow-hidden ring-2 ring-[var(--accent-gold)]">
+                            <img
+                                src="/assets/logo.jpg"
+                                alt="Greenary"
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                        <span className="font-bold text-sm tracking-wide">
+                            GREENARY
+                        </span>
                     </div>
-                    <span>GREENARY ORGANICS</span>
-                </div>
 
-                {/* Desktop Links */}
-                <div className="hidden md:flex items-center gap-8">
-                    {links.map((link) => (
-                        <a
-                            key={link.name}
-                            href={link.href}
-                            className="text-sm uppercase tracking-widest hover:text-brand-gold transition-colors dark:text-gray-300"
+                    {/* Desktop Links */}
+                    <div className="hidden md:flex items-center gap-1">
+                        {links.map((link) => (
+                            <a
+                                key={link.name}
+                                href={link.href}
+                                className="px-4 py-2 text-sm font-medium text-[var(--text-muted)] hover:text-[var(--foreground)] transition-colors rounded-full hover:bg-[var(--surface-hover)]"
+                            >
+                                {link.name}
+                            </a>
+                        ))}
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={toggleDarkMode}
+                            className="p-2 rounded-full hover:bg-[var(--surface-hover)] transition-colors"
+                            aria-label="Toggle theme"
                         >
-                            {link.name}
+                            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+                        </button>
+
+                        <a
+                            href="#products"
+                            className="hidden md:inline-flex px-5 py-2 text-sm font-medium bg-[var(--accent)] text-white rounded-full hover:bg-[var(--accent-gold)] hover:text-black transition-all"
+                        >
+                            Shop Now
                         </a>
-                    ))}
 
-                    <button
-                        onClick={toggleDarkMode}
-                        className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-                    >
-                        {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-                    </button>
-                </div>
-
-                {/* Mobile Toggle */}
-                <div className="md:hidden flex items-center gap-4">
-                    <button
-                        onClick={toggleDarkMode}
-                        className="p-2"
-                    >
-                        {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-                    </button>
-
-                    <button onClick={() => setIsOpen(!isOpen)}>
-                        {isOpen ? <X size={24} /> : <Menu size={24} />}
-                    </button>
+                        {/* Mobile Toggle */}
+                        <button
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="md:hidden p-2"
+                        >
+                            {isOpen ? <X size={20} /> : <Menu size={20} />}
+                        </button>
+                    </div>
                 </div>
             </div>
 
             {/* Mobile Menu */}
             {isOpen && (
                 <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    className="md:hidden bg-brand-light dark:bg-brand-dark absolute top-full left-0 right-0 border-b border-white/10"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="md:hidden mt-3 mx-4 p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] backdrop-blur-xl"
                 >
-                    <div className="flex flex-col p-6 gap-4">
+                    <div className="flex flex-col gap-1">
                         {links.map((link) => (
                             <a
                                 key={link.name}
                                 href={link.href}
                                 onClick={() => setIsOpen(false)}
-                                className="text-lg font-medium hover:text-brand-gold"
+                                className="px-4 py-3 text-sm font-medium rounded-xl hover:bg-[var(--surface-hover)] transition-colors"
                             >
                                 {link.name}
                             </a>
                         ))}
+                        <a
+                            href="#products"
+                            onClick={() => setIsOpen(false)}
+                            className="mt-2 px-4 py-3 text-sm font-medium text-center bg-[var(--accent)] text-white rounded-xl"
+                        >
+                            Shop Now
+                        </a>
                     </div>
                 </motion.div>
             )}

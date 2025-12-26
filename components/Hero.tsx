@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useScroll, useTransform, motion, AnimatePresence } from 'framer-motion';
+import { useScroll, useTransform, useSpring, motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '@/store/useStore';
 import { ArrowLeft, ArrowRight, Instagram, Facebook } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -16,14 +16,18 @@ export default function Hero() {
     // Scroll progress for the entire page/hero section
     // In a real parallax setup, the hero might be sticky for a while (pinning).
     // For this single page, we map the first 2-3 viewports of scroll to the animation.
+    // For this single page, we map the first 2-3 viewports of scroll to the animation.
     const { scrollYProgress } = useScroll();
 
-    // Transform scroll (0 to 1) to frame index (0 to 239)
-    // We assume the animation plays out over the first 200vh of scrolling? 
-    // Or simply map 0-1 of the whole page if it's not too long.
-    // Let's make the Hero sticky for a bit (CSS sticky) or just map standard scroll.
-    // Standard scroll:
-    const frameIndex = useTransform(scrollYProgress, [0, 1], [0, currentProduct.frames.length - 1]);
+    // Smooth scroll progress using spring physics
+    const smoothProgress = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
+
+    // Transform scroll (0 to 1) to frame index
+    const frameIndex = useTransform(smoothProgress, [0, 1], [0, currentProduct.frames.length - 1]);
 
     useEffect(() => {
         // Preload images when product changes
@@ -100,21 +104,12 @@ export default function Hero() {
     }, [images]);
 
     return (
-        <div ref={containerRef} className="relative h-[200vh]">
+        <div ref={containerRef} className="relative h-[300vh]">
             {/* Sticky Container */}
             <div className="sticky top-0 h-screen overflow-hidden">
 
-                {/* Background Layer: Canvas */}
-                <canvas
-                    ref={canvasRef}
-                    className="absolute inset-0 w-full h-full object-cover z-0"
-                />
-
-                {/* Overlay Gradient for readability */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent z-10 pointer-events-none" />
-
-                {/* Content Layer */}
-                <div className="relative z-20 h-full max-w-7xl mx-auto px-6 grid grid-cols-12 pointer-events-none">
+                {/* Content Layer (Behind Product) */}
+                <div className="relative z-0 h-full max-w-7xl mx-auto px-6 grid grid-cols-12 pointer-events-none">
 
                     {/* Left Content */}
                     <div className="col-span-12 md:col-span-5 h-full flex flex-col justify-center pointer-events-auto">
@@ -129,23 +124,31 @@ export default function Hero() {
                                 <h2 className="text-xl md:text-2xl font-light tracking-[0.2em] mb-2" style={{ color: currentProduct.themeColor }}>
                                     {currentProduct.subtitle}
                                 </h2>
-                                <h1 className="text-5xl md:text-7xl font-black uppercase mb-6 leading-tight text-white">
+                                <h1
+                                    className="text-5xl md:text-8xl font-black uppercase mb-6 leading-tight text-white/90"
+                                >
                                     {currentProduct.name}
                                 </h1>
                                 <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-md leading-relaxed">
                                     {currentProduct.description}
                                 </p>
 
-                                <div className="flex gap-4">
-                                    <button className="px-8 py-3 rounded-full border border-white text-white font-medium hover:bg-white hover:text-black transition-all">
-                                        BUY NOW
-                                    </button>
-                                    <button
-                                        className="px-8 py-3 rounded-full font-medium transition-all hover:brightness-110"
-                                        style={{ backgroundColor: currentProduct.themeColor, color: '#fff' }}
+                                <div className="flex gap-4 pointer-events-auto">
+                                    <a
+                                        href="#products"
+                                        className="px-8 py-3 rounded-full border border-white text-white font-medium hover:bg-white hover:text-black transition-all"
                                     >
-                                        LEARN MORE
-                                    </button>
+                                        BUY NOW
+                                    </a>
+                                    <a
+                                        href={`https://wa.me/919022166328?text=Hi, I want to buy ${currentProduct.name}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="px-8 py-3 rounded-full font-medium transition-all hover:brightness-110 text-center flex items-center justify-center"
+                                        style={{ backgroundColor: '#25D366', color: '#fff' }}
+                                    >
+                                        WHATSAPP
+                                    </a>
                                 </div>
                             </motion.div>
                         </AnimatePresence>
@@ -190,6 +193,15 @@ export default function Hero() {
                     </div>
 
                 </div>
+
+                {/* Product Layer (Floating on Top) */}
+                <canvas
+                    ref={canvasRef}
+                    className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none mix-blend-lighten"
+                />
+
+                {/* Optional: Subtle top gradient for text readability if needed */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent z-0 pointer-events-none" />
             </div>
         </div>
     );
