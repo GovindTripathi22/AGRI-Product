@@ -160,13 +160,22 @@ export default function Hero() {
                     {/* Right Navigation */}
                     <div className="col-span-12 md:col-span-3 h-full flex flex-col justify-center items-end pointer-events-auto">
                         <div className="flex items-center gap-6">
-                            <div className="text-6xl font-bold text-white/20">
-                                0{currentProductIndex + 1}
+                            {/* Static 01 / 02 Display */}
+                            <div className="flex flex-col items-end gap-2 font-bold text-white/80">
+                                <a href="/" className="text-xl opacity-40 hover:opacity-100 transition-opacity">01</a>
+                                <div className="text-6xl text-[var(--accent-gold)]">02</div>
                             </div>
 
                             <div className="flex flex-col items-center gap-4">
                                 <button
-                                    onClick={prevProduct}
+                                    onClick={() => {
+                                        // Logic: If on first item, go to Home. Else prev product.
+                                        if (currentProductIndex === 0) {
+                                            window.location.href = '/';
+                                        } else {
+                                            prevProduct();
+                                        }
+                                    }}
                                     className="p-2 hover:text-brand-gold text-white/50 transition-colors uppercase text-xs tracking-widest flex flex-col items-center gap-1"
                                 >
                                     <ArrowLeft size={16} className="rotate-90" />

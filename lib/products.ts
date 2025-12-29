@@ -74,22 +74,5 @@ export const products: Product[] = [
             'Suitable for all home gardens'
         ]
     },
-    {
-        id: 'pot-mixture',
-        name: 'POT MIXTURE WITH POT',
-        subtitle: 'READY TO USE BLEND',
-        description: 'Ready-to-use Potting Mix that comes with a premium pot. A balanced blend of soil, cocopeat, vermicompost, and essential nutrients for hassle-free gardening.',
-        themeColor: '#d4a53c',
-        secondaryColor: '#1b4332',
-        frames: generateFrames('frames', 192),
-        price: 200,
-        unit: 'per pot',
-        image: '/assets/pot-mixture.jpg',
-        benefits: [
-            'Ready to use - just add plants',
-            'Balanced pH and nutrition',
-            'Includes high-quality pot',
-            'Excellent drainage provided'
-        ]
-    }
+
 ];
