@@ -20,8 +20,11 @@ const cormorant = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: "Greenary Organics",
-  description: "Where Soil Meets Sustainability. Premium organic fertilizers.",
+  description: "Premium Organic Interaction",
 };
+
+import MouseTrail from "@/components/MouseTrail";
+import SmoothScroll from "@/components/SmoothScroll";
 
 export default function RootLayout({
   children,
@@ -34,7 +37,10 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} antialiased bg-brand-dark text-brand-light transition-colors duration-500`}
       >
-        {children}
+        <SmoothScroll>
+          <MouseTrail />
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

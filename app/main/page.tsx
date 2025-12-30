@@ -1,6 +1,7 @@
 import Hero from '@/components/Hero';
 import Navbar from '@/components/Navbar';
-import ProductSection from '@/components/ProductSection';
+import { CollectionSection } from '@/components/LandingParallax';
+import BrandShowcase from '@/components/BrandShowcase';
 import { Truck, Leaf, Sprout } from 'lucide-react';
 
 export default function Home() {
@@ -11,7 +12,12 @@ export default function Home() {
       {/* Hero Section */}
       <Hero />
 
-      {/* Products Section */}
+      {/* Products Section - Added Premium Collection Grid */}
+      <CollectionSection />
+
+      {/* Brand Showcase */}
+      <BrandShowcase />
+
       {/* Benefits Section */}
       <section id="benefits" className="py-24 px-6">
         <div className="max-w-5xl mx-auto">

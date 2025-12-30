@@ -1,6 +1,7 @@
 
 import LandingParallax, { CollectionSection } from "@/components/LandingParallax";
 import PromoSection from "@/components/PromoSection";
+import BrandShowcase from "@/components/BrandShowcase";
 import { Truck, Leaf, Sprout } from 'lucide-react';
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
             <LandingParallax />
             <CollectionSection />
             <PromoSection />
+            <BrandShowcase />
 
             {/* Benefits Section */}
             <section id="benefits" className="py-24 px-6">

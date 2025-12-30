@@ -16,6 +16,7 @@ export default function LandingParallax() {
     const router = useRouter();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const progressCircleRef = useRef<SVGCircleElement>(null);
     const [images, setImages] = useState<HTMLImageElement[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -114,14 +115,28 @@ export default function LandingParallax() {
         const st = ScrollTrigger.create({
             trigger: containerRef.current,
             start: "top top",
-            end: "+=200%", // Reduced scroll length slightly for punchier feel
+            end: "+=200%",
             pin: true,
             scrub: 0.5,
             onUpdate: (self) => {
-                const frameIndex = Math.floor(self.progress * (FRAME_COUNT - 1));
+                // Ensure frame index is within bounds [0, 191]
+                const frameIndex = Math.min(
+                    FRAME_COUNT - 1,
+                    Math.floor(self.progress * (FRAME_COUNT - 1))
+                );
                 renderFrame(frameIndex);
+
+                // Update Progress Ring
+                if (progressCircleRef.current) {
+                    const circumference = 2 * Math.PI * 46;
+                    const offset = circumference - (self.progress * circumference);
+                    progressCircleRef.current.style.strokeDashoffset = String(offset);
+                }
             },
         });
+
+        // Force a refresh to recalculate start/end positions after image load
+        ScrollTrigger.refresh();
 
         return () => {
             st.kill();
@@ -130,13 +145,13 @@ export default function LandingParallax() {
     }, [isLoaded, images]);
 
     const handleEnterSite = () => {
-        // Fade out entire container
+        // Updated to fade out slightly faster
         gsap.to(containerRef.current, {
             opacity: 0,
-            duration: 0.8,
+            duration: 0.5,
             ease: "power2.inOut",
             onComplete: () => {
-                router.push("/main"); /* User requested to go to VERMICOMPOST page, which is /main */
+                router.push("/main");
             }
         });
     };
@@ -195,8 +210,33 @@ export default function LandingParallax() {
                     <div className="col-span-12 md:col-span-3 h-full flex flex-col justify-center items-end pointer-events-auto">
                         <div className="flex items-center gap-6">
                             {/* Static 01 / 02 Display */}
-                            <div className="flex flex-col items-end gap-2 font-bold text-white/80">
-                                <div className="text-6xl text-[var(--accent-gold)]">01</div>
+                            <div className="flex flex-col items-end gap-2 font-bold text-white/80 relative">
+                                <div className="relative flex items-center justify-center w-24 h-24">
+                                    {/* Progress Ring */}
+                                    <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none">
+                                        <circle
+                                            cx="48"
+                                            cy="48"
+                                            r="46"
+                                            className="stroke-white/10"
+                                            strokeWidth="2"
+                                            fill="none"
+                                        />
+                                        <circle
+                                            ref={progressCircleRef}
+                                            cx="48"
+                                            cy="48"
+                                            r="46"
+                                            className="stroke-[var(--accent-gold)] transition-all duration-75 ease-linear"
+                                            strokeWidth="2"
+                                            fill="none"
+                                            strokeDasharray="289.02" // 2 * PI * 46
+                                            strokeDashoffset="289.02"
+                                            strokeLinecap="round"
+                                        />
+                                    </svg>
+                                    <div className="text-6xl text-[var(--accent-gold)]">01</div>
+                                </div>
                                 <button
                                     onClick={handleEnterSite}
                                     className="text-xl opacity-40 hover:opacity-100 transition-opacity"
